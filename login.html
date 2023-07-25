@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Signup Form</title>
+		
+		
+<link rel="stylesheet"
+href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity=
+"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+crossorigin="anonymous">
+		
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<script src="https://kit.fontawesome.com/ae0bdaa22e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+	
+	<br>
+	<br>
+	<br>
+	<div class="container" >
+		<div class="row">
+		<div class="col-md-3">
+					
+		</div>
+				
+		<div class="col-md-6 main">
+					
+			<!-- <form action="http://localhost:3000/sign_up" method="post">				 -->
+			<h1> Login page </h1>
+							
+			<!-- <input class="box" type="text" name="name" id="name"
+			placeholder="Name" required /><br> -->
+							
+			<input class="box" type="email" name="email" id="email"
+			placeholder="E-Mail " required /><br>
+							
+			<input class="box" type="password" name="password"
+			id="password" placeholder="Password " required/><br>
+							
+			<!-- <input class="box" type="text" name="phone" id="phone"
+			placeholder="Phone Number " required/><br> -->
+						<br>
+			<input type="submit" id="submitDetails"
+			name="submitDetails" value="Login" /><br>
+            <input type="submit" id="logout"
+			name="submitDetails" value="Logout" /><br>
+
+            <!-- <login>
+                <h1 style="padding-top:10px ;"> Or </h1>
+
+                <h1 style="margin-top: 0;"> Login with Social Network</h1>
+                <div style="display: flex; padding: 50px; justify-content: center; align-items: center; padding-top: 0;">
+                <div style="padding: 10px;">
+                    <i class="fa-brands fa-google fa-2xl" style="color: #d72323;"></i>
+                </div>
+                <div style="padding: 10px;">
+                    <i class="fa-brands fa-square-facebook fa-2xl" style="color: #2033c5;"></i>
+                </div>
+                <div style="padding: 10px;">
+                    <i class="fa-brands fa-square-twitter fa-2xl" style="color: #4eaedf;"></i>
+                </div>
+                </div>
+            </login> -->
+					
+			<!-- </form> -->
+					
+		</div>
+				
+				
+		<div class="col-md-3">
+		</div>
+				
+	</div>
+	</div>
+</body>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+  import { getDatabase,update,ref } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics.js";
+  import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyARwWwNLFk0QNNJDpVqP-uaE_EzK6Ocx4Y",
+    authDomain: "login-page-1e3b9.firebaseapp.com",
+    databaseURL: "https://login-page-1e3b9-default-rtdb.firebaseio.com",
+    projectId: "login-page-1e3b9",
+    storageBucket: "login-page-1e3b9.appspot.com",
+    messagingSenderId: "383794276939",
+    appId: "1:383794276939:web:b811c358567d4a44cffbce",
+    measurementId: "G-9NCP920RTQ"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const database = getDatabase(app);
+  const auth = getAuth();
+
+    submitDetails.addEventListener("click",(e)=>{
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    const dt = new Date();
+    update(ref(database,"users/"+user.uid),{
+        last_login:dt,
+    })
+     alert("user Logged in");
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorMessage)
+  });
+
+});
+
+const user = auth.currentUser;
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    const uid = user.uid;
+    window.location = 'index.html';
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
+});
+
+logout.addEventListener("click",(e)=>{
+    signOut(auth).then(() => {
+  // Sign-out successful.
+  alert("user loggeout")
+}).catch((error) => {
+  
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorMessage)
+
+});
+
+})
+  
+
+</script>
+</html>
